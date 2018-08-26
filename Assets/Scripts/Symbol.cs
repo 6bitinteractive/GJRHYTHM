@@ -9,40 +9,41 @@ public class Symbol : MonoBehaviour
 {
     public enum Type
     {
-        Dot,
-        Dash,
+        Dot, Dash
     }
 
-    public Type type;
+    public Type SymbolType;
 
     // Avoids being detected by the raycast twice(?)
     // and also being considered a miss even when the symbol has been hit by the player
-    public bool hit = false;
-
+    private bool isHit;
     private AudioManager audioManager;
 
     void Start()
     {
         audioManager = GetComponent<AudioManager>();
+        isHit = false;
     }
 
-    public void Play()
+    public void Hit(Enums.HitType hitType)
     {
-        audioManager.Play();
+        if (!isHit)
+        {
+            // Set to true when player does hit the Symbol
+            isHit = (hitType != Enums.HitType.Miss);
+
+            // Play audio depending on the type of hit
+            audioManager.Play(hitType);
+
+            //StartCoroutine(Deactivate());
+        }
     }
 
-    public void PlayMiss()
+    private IEnumerator Deactivate()
     {
-        audioManager.PlayMiss();
-    }
-
-    public void Hide()
-    {
+        // Hide the object for now because SetActive(false) deactivates all the object's components (consequence: audio doesn't play)
         gameObject.GetComponent<SpriteRenderer>().enabled = false;
-    }
 
-    public IEnumerator Deactivate()
-    {
         yield return new WaitWhile(() => audioManager.SoundIsPlaying());
         gameObject.SetActive(false);
     }
@@ -50,13 +51,10 @@ public class Symbol : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         //Debug.Log (other.gameObject.name);
-        if (other.gameObject.CompareTag("MissCollider") && !hit)
+        if (other.gameObject.CompareTag("MissCollider") && !isHit)
         {
             Debug.Log("Hit: Miss");
-
-            PlayMiss();
-            Hide(); // Hide the object for now because SetActive(false) deactivates all the object's components (consequence: audio doesn't play)
-            StartCoroutine(Deactivate());
+            Hit(Enums.HitType.Miss);
         }
     }
 }

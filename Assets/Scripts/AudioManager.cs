@@ -2,27 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AudioManager : MonoBehaviour {
-
-    public AudioClip audioClipHit;
-    public AudioClip audioClipMiss; // TODO: Change the AudioSource clip in the inspector
+public class AudioManager : MonoBehaviour
+{
+    public AudioClip AudioClipHit;
+    public AudioClip AudioClipMiss; // TODO: Change the AudioSource clip in the inspector
 
     private AudioSource audioSource;
 
-    void Start ()
+    void Start()
     {
         audioSource = GetComponent<AudioSource>();
     }
 
-	public void Play()
+    public void Play(Enums.HitType type)
     {
-        audioSource.clip = audioClipHit;
-        audioSource.Play();
-    }
+        switch (type)
+        {
+            case Enums.HitType.Miss:
+                audioSource.clip = AudioClipMiss;
+                break;
+            default:
+                audioSource.clip = AudioClipHit;
+                break;
+        }
 
-    public void PlayMiss()
-    {
-        audioSource.clip = audioClipMiss;
         audioSource.Play();
     }
 

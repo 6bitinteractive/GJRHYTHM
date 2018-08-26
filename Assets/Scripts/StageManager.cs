@@ -5,23 +5,21 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(MorseCode))]
-[RequireComponent(typeof(Message))]
 
-public class StageManager : MonoBehaviour {
-
-    public Text characterPanel;
+public class StageManager : MonoBehaviour
+{
+    [Tooltip("Smaller number means a faster rate of spawning the symbols.")]
+    public float TimeUntilNextSpawn = 1.0f;
 
     [Tooltip("x-Position where a symbol will be dropped. Specified from left to right.")]
-    public float[] laneDropPositions = new float[]{ -1.97f, -1.0f, -0.0f, 1.0f, 2.0f };
+    public float[] LaneDropPositions = new float[] { -1.97f, -1.0f, -0.0f, 1.0f, 2.0f };
 
-    [Range(1, 5)]
-    public int stage = 1;
+    [Range(1, 6)]
+    public int Stage = 1;
 
-
-    // This should be taken from a config... json data?
-    // or temporarily create a class and create structs for each stage???
-    private Message message;
-
+    public Text CharacterPanel;
+    public Text DecodedMessagePanel;
+    public Message[] Messages;
 
     private bool timerReset = true;
     private bool getNewCharacter = true;
@@ -29,19 +27,31 @@ public class StageManager : MonoBehaviour {
     private int currentSymbol = 0;
     private List<Symbol> symbolsToSpawn;
     private GameObject spawnedObjects;
-    private string msg;
+    private string message;
+    private Queue<List<Symbol>> encodedMessage;
+    private MorseCode morseCode;
 
-    void Start ()
+    void Start()
     {
-        if (characterPanel == null)
-            Debug.Log("characterPanel has no Text object associated with it.");
+        if (CharacterPanel == null)
+            Debug.LogError("characterPanel has no Text object associated with it.");
 
-        message = GetComponent<Message>();
-        message.content = "HELLO MY NAME IS JOHN I AM FROM TEXAS";
+        morseCode = GetComponent<MorseCode>();
 
-        // Remove whitespace in message; placed in separate variable to keep original message
-        msg = message.RemoveContentWhiteSpace(message.content);
-        message.encodedContent = MorseCode.Instance.Encode(msg);
+        int msgIndex = Stage - 1;
+        message = Messages[msgIndex].Content;
+        //DecodedMessagePanel.text = message;
+
+        // Remove whitespace in message
+        // TODO: Keep whitespace?
+        message = Messages[msgIndex].RemoveWhiteSpace(message);
+
+        // TODO: "Shuffle" message before encoding then save order;
+        // this is to avoid manually setting the order and at the same time still making the order of the message remain the same after each play,
+        // i.e. pseudo-predetermined
+        // -- (Unimplemented) --
+
+        encodedMessage = morseCode.Encode(message);
 
         // Create a container for spawned objects
         spawnedObjects = new GameObject("Spawned Symbols");
@@ -50,7 +60,7 @@ public class StageManager : MonoBehaviour {
         symbolsToSpawn = new List<Symbol>();
     }
 
-	void Update ()
+    void Update()
     {
         if (StageEnd())
         {
@@ -66,10 +76,10 @@ public class StageManager : MonoBehaviour {
             if (getNewCharacter)
             {
                 // Display current character at the top panel
-                characterPanel.text = msg[currentCharacter].ToString();
+                CharacterPanel.text = message[currentCharacter].ToString().ToUpperInvariant();
 
                 // Get current character's code
-                symbolsToSpawn = message.encodedContent.Dequeue();
+                symbolsToSpawn = encodedMessage.Dequeue();
 
                 getNewCharacter = false;
             }
@@ -89,14 +99,14 @@ public class StageManager : MonoBehaviour {
     private IEnumerator SpawnSymbol()
     {
         // Waits for a certain amount of time then returns something
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(TimeUntilNextSpawn);
 
         // Spawn symbol one at a time
         if (currentSymbol < symbolsToSpawn.Count)
         {
             // Spawn at a random lane
-            int randomLane = UnityEngine.Random.Range(0, laneDropPositions.Length);
-            GameObject spawnedSymbol = Instantiate(symbolsToSpawn[currentSymbol].gameObject, new Vector2(laneDropPositions[randomLane], 3.3f), Quaternion.identity);
+            int randomLane = UnityEngine.Random.Range(0, LaneDropPositions.Length);
+            GameObject spawnedSymbol = Instantiate(symbolsToSpawn[currentSymbol].gameObject, new Vector2(LaneDropPositions[randomLane], symbolsToSpawn[currentSymbol].transform.position.y), Quaternion.identity);
             spawnedSymbol.transform.parent = spawnedObjects.transform;
 
             // Move index to next symbol
@@ -117,8 +127,8 @@ public class StageManager : MonoBehaviour {
 
     private bool StageEnd()
     {
-        return message.encodedContent.Count == 0 && currentSymbol == symbolsToSpawn.Count;
+        return encodedMessage.Count == 0 && currentSymbol == symbolsToSpawn.Count;
     }
 }
 
-// https://www.youtube.com/watch?v=kyp3Ks5a6to
+// Reference: https://www.youtube.com/watch?v=kyp3Ks5a6to

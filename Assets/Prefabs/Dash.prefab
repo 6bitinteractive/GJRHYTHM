@@ -39,7 +39,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1008586799187360}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 3.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -171,8 +171,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a106f08f2b9ca74095781647af6c1f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioClipHit: {fileID: 8300000, guid: 69fa0e649e0b09f48ace7ef84cd37fbf, type: 3}
-  audioClipMiss: {fileID: 8300000, guid: 7d3cceeaaa9c7e0429ae1fde33a5b569, type: 3}
+  AudioClipHit: {fileID: 8300000, guid: 69fa0e649e0b09f48ace7ef84cd37fbf, type: 3}
+  AudioClipMiss: {fileID: 0}
 --- !u!114 &114633800285439894
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -184,8 +184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fd58d69614b4cb4eb03ef3a27305843, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 1
-  hit: 0
+  SymbolType: 1
 --- !u!212 &212219863213793496
 SpriteRenderer:
   m_ObjectHideFlags: 1

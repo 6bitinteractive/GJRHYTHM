@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Message : MonoBehaviour {
+[CreateAssetMenu(menuName = "transMISSION/Create Message", fileName = "Message00", order = 0)]
+public class Message : ScriptableObject
+{
+    [Tooltip("Content of the message. Case does not matter but avoid punctuation marks for now.")]
+    public string Content;
 
-    [Tooltip("Content of the message. Case does not matter.")]
-    public string content;
-    public Queue<List<Symbol>> encodedContent;
-
-    public string RemoveContentWhiteSpace(string content)
+    public string RemoveWhiteSpace(string content)
     {
         return content.Replace(" ", null);
     }
