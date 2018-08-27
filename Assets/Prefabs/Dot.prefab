@@ -79,7 +79,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.34545454
+  m_Radius: 0.15
 --- !u!82 &82702517823738338
 AudioSource:
   m_ObjectHideFlags: 1
@@ -172,7 +172,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AudioClipHit: {fileID: 8300000, guid: 181b265e24dedc14a8c3c34ed1649e70, type: 3}
-  AudioClipMiss: {fileID: 0}
+  AudioClipMiss: {fileID: 8300000, guid: d2ab84d0b826cb343b9106ffc923de0f, type: 3}
 --- !u!114 &114560502857000066
 MonoBehaviour:
   m_ObjectHideFlags: 1

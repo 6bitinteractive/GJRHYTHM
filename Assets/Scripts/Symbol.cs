@@ -27,16 +27,16 @@ public class Symbol : MonoBehaviour
 
     public void Hit(Enums.HitType hitType)
     {
-        if (!isHit)
-        {
-            // Set to true when player does hit the Symbol
-            isHit = (hitType != Enums.HitType.Miss);
+        // Only let the symbol be hit once
+        if (isHit) return;
 
-            // Play audio depending on the type of hit
-            audioManager.Play(hitType);
+        // Set to true when player does hit the Symbol
+        isHit = true;
 
-            //StartCoroutine(Deactivate());
-        }
+        // Play audio depending on the type of hit
+        audioManager.Play(hitType);
+
+        StartCoroutine(Deactivate());
     }
 
     private IEnumerator Deactivate()
@@ -45,7 +45,8 @@ public class Symbol : MonoBehaviour
         gameObject.GetComponent<SpriteRenderer>().enabled = false;
 
         yield return new WaitWhile(() => audioManager.SoundIsPlaying());
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
+        Destroy(gameObject);
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -57,6 +58,7 @@ public class Symbol : MonoBehaviour
             Hit(Enums.HitType.Miss);
         }
     }
+
 }
 
 // https://docs.unity3d.com/ScriptReference/AudioSource.html

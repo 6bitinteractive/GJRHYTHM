@@ -570,7 +570,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 562143705}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.22, z: 0}
+  m_LocalPosition: {x: 0, y: 0.34, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1798308533}
@@ -885,7 +885,7 @@ MonoBehaviour:
   - -0
   - 1
   - 2
-  Stage: 6
+  Stage: 1
   CharacterPanel: {fileID: 1212510086}
   DecodedMessagePanel: {fileID: 243199711}
   Messages:
@@ -970,7 +970,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1415877801}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.68743974, y: -3.61, z: 9.890625}
+  m_LocalPosition: {x: -0.68743974, y: -4.19, z: 9.890625}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1680419229}

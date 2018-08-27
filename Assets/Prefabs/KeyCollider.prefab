@@ -51,5 +51,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b884ffb3a7bf1943a29a143d122a420, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  userInput: 32
-  range: 3.8
+  UserInput: 0
+  HitRange: 3.8
+  HalfwayRange: 3.8
+  BadMin: 1
+  GoodMin: 0.5
+  GreatMin: 0.07

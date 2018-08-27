@@ -5,7 +5,11 @@ using UnityEngine;
 public class KeyCollider : MonoBehaviour
 {
     public KeyCode UserInput;
-    public float Range = 3.8f;
+    public float HitRange = 7.6f;
+    public float HalfwayRange = 3.8f;
+    public float BadMin = 1.0f;
+    public float GoodMin = 0.5f;
+    public float GreatMin = 0.05f;
 
     private Vector2 direction; // Direction the raycast is going to be facing
     private Vector2 lineOfSight; // Location of the raycast's line of sight
@@ -20,17 +24,17 @@ public class KeyCollider : MonoBehaviour
     void Update()
     {
         // Displays the raycast for debugging purposes
-        //Debug.DrawRay(lineOfSight, direction * range, Color.red);
+        Debug.DrawRay(lineOfSight, direction * HitRange, Color.red);
 
         // Creates a raycast using an object's origin point, the direction the ray cast is facing, and length of the raycast
-        RaycastHit2D hit = Physics2D.Raycast(lineOfSight, direction, Range);
+        RaycastHit2D hit = Physics2D.Raycast(lineOfSight, direction, HitRange);
 
         if (hit.collider != null) // Fixes null reference errors
         {
             Symbol symbol = hit.collider.gameObject.GetComponent<Symbol>();
-            if (hit.distance <= Range && symbol != null)
+            if (hit.distance <= HitRange && symbol != null)
             {
-                // userInput is adjustable through unity's inspector
+                // UserInput is adjustable through unity's inspector
                 if (Input.GetKeyDown(UserInput)) // Use GetKeyDown instead of GetKey
                 {
                     Enums.HitType type = DetermineHitType(hit.distance);
@@ -43,17 +47,15 @@ public class KeyCollider : MonoBehaviour
 
     private Enums.HitType DetermineHitType(float distance)
     {
-        // Note: Be aware of floating point imprecision https://docs.unity3d.com/ScriptReference/Mathf.Approximately.html
-        if (distance <= Range && distance > 1.0f)
+        if (distance <= HalfwayRange && distance > BadMin)
             return Enums.HitType.Bad;
-        else if (distance <= 1.0f && distance > 0.5f)
+        else if (distance <= BadMin && distance > GoodMin)
             return Enums.HitType.Good;
-        else if (distance <= 0.5f && distance > 0.0f)
+        else if (distance <= GoodMin && distance > GreatMin)
             return Enums.HitType.Great;
-        else if (Mathf.Approximately(distance, 0.0f))
+        else if (distance <= GreatMin)
             return Enums.HitType.Perfect;
-
-        Debug.LogError("This should not print!");
-        return Enums.HitType.Miss; // It can't ever be a miss though because we only check input if it's within the hit range
+        else
+            return Enums.HitType.Miss;
     }
 }

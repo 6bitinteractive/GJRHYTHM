@@ -78,7 +78,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.6090909, y: 1.8909091}
+  m_Size: {x: 0.31, y: 1.44}
   m_Direction: 0
 --- !u!82 &82452356589240340
 AudioSource:
@@ -172,7 +172,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AudioClipHit: {fileID: 8300000, guid: 69fa0e649e0b09f48ace7ef84cd37fbf, type: 3}
-  AudioClipMiss: {fileID: 0}
+  AudioClipMiss: {fileID: 8300000, guid: d2ab84d0b826cb343b9106ffc923de0f, type: 3}
 --- !u!114 &114633800285439894
 MonoBehaviour:
   m_ObjectHideFlags: 1
